@@ -14,7 +14,7 @@ func (app *application) createMovieHandler(writer http.ResponseWriter, request *
 func (app *application) showMovieHandler(writer http.ResponseWriter, request *http.Request) {
 	id, err := app.readIDParam(request)
 	if err != nil {
-		http.NotFound(writer, request)
+		app.notFoundResponse(writer, request)
 		return
 	}
 
@@ -32,7 +32,6 @@ func (app *application) showMovieHandler(writer http.ResponseWriter, request *ht
 			"movie": movie,
 		}, nil)
 	if err != nil {
-		app.logger.Println(err)
-		http.Error(writer, "The server encountered a problem and could not process your request", http.StatusInternalServerError)
+		app.serverErrorResponse(writer, request, err)
 	}
 }
