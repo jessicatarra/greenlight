@@ -190,7 +190,9 @@ func (app *application) listMoviesHandler(writer http.ResponseWriter, request *h
 
 	input.Filters.Sort = app.readString(qs, "sort", "id")
 
-	if !v.Valid() {
+	input.Filters.SortSafelist = []string{"id", "title", "year", "runtime", "-id", "-title", "-year", "-runtime"}
+
+	if data.ValidateFilters(v, input.Filters); !v.Valid() {
 		app.failedValidationResponse(writer, request, v.Errors)
 		return
 	}
