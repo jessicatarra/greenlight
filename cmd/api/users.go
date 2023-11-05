@@ -51,7 +51,13 @@ func (app *application) registerUserHandler(writer http.ResponseWriter, request 
 		return
 	}
 
-	err = app.mailer.Send(user.Email, "user_welcome.gohtml", user)
+	app.background(func() {
+		err = app.mailer.Send(user.Email, "user_welcome.gohtml", user)
+		if err != nil {
+			app.logger.PrintError(err, nil)
+		}
+	})
+
 	if err != nil {
 		app.serverErrorResponse(writer, request, err)
 		return
