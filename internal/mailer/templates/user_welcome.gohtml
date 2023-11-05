@@ -7,9 +7,10 @@ Thanks for signing up for a Greenlight account. We're excited to have you on boa
 
 For future reference, your user ID number is {{.userID}}.
 
-To activate your Greenlight account please click the following link:
+Please send a request to the `PUT /v1/users/activated` endpoint with the following JSON
+body to activate your account:
 
-http://localhost:4000/v1/users/activated?token={{.activationToken}}
+{{.activationToken}}
 
 Please note that this is a one-time use token and it will expire in 3 days.
 
@@ -31,8 +32,11 @@ The Greenlight Team
     <p>Hi,</p>
     <p>Thanks for signing up for a Greenlight account. We're excited to have you on board!</p>
     <p>For future reference, your user ID number is {{.userID}}.</p>
-    <p>To activate your Greenlight account please click the following link:</p>
-    <a href="http://localhost:4000/v1/users/activated?token={{.activationToken}}" target="_blank">click here</a>
+     <p>Please send a request to the <code>PUT /v1/users/activated</code> endpoint with the
+    following JSON body to activate your account:</p>
+    <pre><code>
+    http://localhost:4000/v1/users/activated?token={{.activationToken}}
+    </code></pre>
     <p>Please note that this is a one-time use token and it will expire in 3 days.</p>
     <p>Thanks,</p>
     <p>The Greenlight Team</p>
