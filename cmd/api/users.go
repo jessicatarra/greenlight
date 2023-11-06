@@ -116,6 +116,7 @@ func (app *application) registerUserHandler(writer http.ResponseWriter, request 
 			"activationToken": token.Plaintext,
 			"userID":          user.ID,
 		}
+		print(token.Plaintext)
 
 		err = app.mailer.Send(user.Email, "user_welcome.gohtml", data)
 		if err != nil {
