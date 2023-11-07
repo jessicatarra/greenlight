@@ -1,0 +1,8 @@
+export GREENLIGHT_DB_DSN=
+export MIGRATION_URL=
+export SMTP_HOST=
+export SMTP_PORT=
+export SMTP_USERNAME=
+export SMTP_PASSWORD=
+export SMTP_SENDER=
+export CORS_TRUSTED_ORIGINS=
