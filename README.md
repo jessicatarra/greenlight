@@ -29,10 +29,24 @@ See more here: https://lets-go-further.alexedwards.net/
     ```shell
     go mod tidy
     ```
+   
+Also make sure to install the migrate tool for database migrations. Detailed installation instructions for different operating systems can be found here, but on macOS you should be able to install it with the command:
+
+   ```shell
+      brew install golang-migrate
+   ```
+And on Linux and Windows, the easiest method is to download a pre-built binary and move it to a location on your system path. For example, on Linux:
+
+```shell
+
+   curl -L https://github.com/golang-migrate/migrate/releases/download/v4.14.1/migrate.linux-amd64.tar.gz | tar xvz &
+   mv migrate.linux-amd64 $GOPATH/bin/migrate
+
+```
 
 4. **Environment Variables**: Create a `.envrc` file in the project directory and add the following environment variables with their corresponding values:
 
-```shell
+```
 export GREENLIGHT_DB_DSN=
 
 export MIGRATION_URL=
@@ -55,9 +69,9 @@ Make sure to provide the necessary details for each environment variable. Here's
 
 GREENLIGHT_DB_DSN: The database connection string for PostgreSQL. Modify it according to your PostgreSQL database setup.
 
-MIGRATION_URL: The URL or path to the migrations directory. Modify it to match the location of your migrations.
+MIGRATION_URL: The URL or path to the migrations' directory. Modify it to match the location of your migrations.
 
-SMTP_HOST, SMTP_PASSWORD, SMTP_PORT, SMTP_SENDER, SMTP_USERNAME: SMTP server configuration for sending emails. Update these values with your SMTP server details. I use [Mailtrap](https://mailtrap.io/), very easy to setup.
+SMTP_HOST, SMTP_PASSWORD, SMTP_PORT, SMTP_SENDER, SMTP_USERNAME: SMTP server configuration for sending emails. Update these values with your SMTP server details. I use [Mailtrap](https://mailtrap.io/), very easy to set up.
 
 CORS_TRUSTED_ORIGINS: A space-separated list of trusted origins for Cross-Origin Resource Sharing (CORS). Modify it with the origins that should be allowed to access the API.
 
