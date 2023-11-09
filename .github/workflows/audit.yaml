@@ -21,5 +21,18 @@ jobs:
       - name: Install staticcheck
         run: go install honnef.co/go/tools/cmd/staticcheck@latest
 
+
+      - name: Create .envrc file
+        run: |
+          touch .envrc
+#          "export GREENLIGHT_DB_DSN=${{ secrets.GREENLIGHT_DB_DSN }}" >> .envrc
+#          "export MIGRATION_URL=${{ secrets.MIGRATION_URL }}" >> .envrc
+#          "export SMTP_HOST=${{ secrets.SMTP_HOST }}" >> .envrc
+#          "export SMTP_PORT=${{ secrets.SMTP_PORT }}" >> .envrc
+#          "export SMTP_USERNAME=${{ secrets.SMTP_USERNAME }}" >> .envrc
+#          "export SMTP_PASSWORD=${{ secrets.SMTP_PASSWORD }}" >> .envrc
+#          "export SMTP_SENDER=${{ secrets.SMTP_SENDER }}" >> .envrc
+#          "export CORS_TRUSTED_ORIGINS=${{ secrets.CORS_TRUSTED_ORIGINS }}" >> .envrc
+
       - name: Run make audit
         run: make audit
