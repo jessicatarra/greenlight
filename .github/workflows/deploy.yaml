@@ -1,0 +1,25 @@
+name: Fly Deploy
+on:
+  push:
+    branches: [ "main" ]
+env:
+    FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+    GREENLIGHT_DB_DSN: ${{ secrets.GREENLIGHT_DB_DSN }}
+    MIGRATION_URL: ${{ secrets.MIGRATION_URL }}
+    SMTP_HOST: ${{ secrets.SMTP_HOST }}
+    SMTP_PORT: ${{ secrets.SMTP_PORT }}
+    SMTP_USERNAME: ${{ secrets.SMTP_USERNAME }}
+    SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+    SMTP_SENDER: ${{ secrets.SMTP_SENDER }}
+    CORS_TRUSTED_ORIGINS: ${{ secrets.CORS_TRUSTED_ORIGINS }}
+    API_PORT: ${{ secrets.API_PORT }}
+    API_ENV: ${{ secrets.API_ENV }}
+jobs:
+  deploy:
+    name: Deploy app
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: superfly/flyctl-actions/setup-flyctl@master
+      - run: echo "API_VERSION=$(git describe --always --dirty --tags --long)"
+      - run: flyctl deploy --remote-only

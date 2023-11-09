@@ -1,0 +1,90 @@
+# flyctl launch added from .gitignore
+# If you prefer the allow list template instead of the deny list, see community template:
+# https://github.com/github/gitignore/blob/main/community/Golang/Go.AllowList.gitignore
+#
+# Binaries for programs and plugins
+**/*.exe
+**/*.exe~
+**/*.dll
+**/*.so
+**/*.dylib
+
+# Test binary, built with `go test -c`
+**/*.test
+
+# Output of the go coverage tool, specifically when used with LiteIDE
+**/*.out
+
+# Dependency directories (remove the comment below to include it)
+# vendor/
+
+# Go workspace file
+**/go.work
+
+# secrets
+**/.envrc
+**/.env
+
+# flyctl launch added from .idea/.gitignore
+# Default ignored files
+.idea/shelf
+.idea/workspace.xml
+# Editor-based HTTP Client requests
+.idea/httpRequests
+# Datasource local storage ignored files
+.idea/dataSources
+.idea/dataSources.local.xml
+
+# flyctl launch added from vendor/github.com/go-mail/mail/v2/.gitignore
+
+
+# Binaries for programs and plugins
+vendor/github.com/go-mail/mail/v2/**/*.exe
+vendor/github.com/go-mail/mail/v2/**/*.dll
+vendor/github.com/go-mail/mail/v2/**/*.so
+vendor/github.com/go-mail/mail/v2/**/*.dylib
+
+# Test binary, build with `go test -c`
+vendor/github.com/go-mail/mail/v2/**/*.test
+
+# Output of the go coverage tool, specifically when used with LiteIDE
+vendor/github.com/go-mail/mail/v2/**/*.out
+
+
+# IDE's
+vendor/github.com/go-mail/mail/v2/**/.idea
+
+# flyctl launch added from vendor/github.com/golang-migrate/migrate/v4/.gitignore
+vendor/github.com/golang-migrate/migrate/v4/**/.DS_Store
+vendor/github.com/golang-migrate/migrate/v4/**/cli/build
+vendor/github.com/golang-migrate/migrate/v4/**/cli/cli
+vendor/github.com/golang-migrate/migrate/v4/**/cli/migrate
+vendor/github.com/golang-migrate/migrate/v4/**/.coverage
+vendor/github.com/golang-migrate/migrate/v4/**/.godoc.pid
+vendor/github.com/golang-migrate/migrate/v4/**/vendor
+vendor/github.com/golang-migrate/migrate/v4/**/.vscode
+vendor/github.com/golang-migrate/migrate/v4/**/.idea
+vendor/github.com/golang-migrate/migrate/v4/**/dist
+
+# flyctl launch added from vendor/github.com/lib/pq/.gitignore
+vendor/github.com/lib/pq/**/.db
+vendor/github.com/lib/pq/**/*.test
+vendor/github.com/lib/pq/**/*~
+vendor/github.com/lib/pq/**/*.swp
+vendor/github.com/lib/pq/**/.idea
+vendor/github.com/lib/pq/**/.vscode
+
+# flyctl launch added from vendor/go.uber.org/atomic/.gitignore
+vendor/go.uber.org/atomic/bin
+vendor/go.uber.org/atomic/**/.DS_Store
+vendor/go.uber.org/atomic/vendor
+vendor/go.uber.org/atomic/**/cover.html
+vendor/go.uber.org/atomic/**/cover.out
+vendor/go.uber.org/atomic/**/lint.log
+
+# Binaries
+vendor/go.uber.org/atomic/**/*.test
+
+# Profiling output
+vendor/go.uber.org/atomic/**/*.prof
+fly.toml
