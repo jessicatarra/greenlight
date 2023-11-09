@@ -33,7 +33,7 @@ See more here: https://lets-go-further.alexedwards.net/
 4. **Environment Variables**: Create a `.envrc` file in the project directory and add the following environment variables with their corresponding values:
 
 ```
-export GREENLIGHT_DB_DSN=
+export DATABASE_URL=
 
 export MIGRATION_URL=
 
@@ -53,7 +53,7 @@ export CORS_TRUSTED_ORIGINS=
 
 Make sure to provide the necessary details for each environment variable. Here's a brief explanation of each variable:
 
-GREENLIGHT_DB_DSN: The database connection string for PostgreSQL. Modify it according to your PostgreSQL database setup.
+DATABASE_URL: The database connection string for PostgreSQL. Modify it according to your PostgreSQL database setup.
 
 MIGRATION_URL: The URL or path to the migrations' directory. Modify it to match the location of your migrations.
 

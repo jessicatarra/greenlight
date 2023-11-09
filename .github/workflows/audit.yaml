@@ -22,7 +22,7 @@ jobs:
       - name: Create .envrc file
         run: |
           touch .envrc
-#          "export GREENLIGHT_DB_DSN=${{ secrets.GREENLIGHT_DB_DSN }}" >> .envrc
+#          "export DATABASE_URL=${{ secrets.DATABASE_URL }}" >> .envrc
 #          "export MIGRATION_URL=${{ secrets.MIGRATION_URL }}" >> .envrc
 #          "export SMTP_HOST=${{ secrets.SMTP_HOST }}" >> .envrc
 #          "export SMTP_PORT=${{ secrets.SMTP_PORT }}" >> .envrc

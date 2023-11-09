@@ -1,4 +1,4 @@
-export GREENLIGHT_DB_DSN=
+export DATABASE_URL=
 export MIGRATION_URL=
 export SMTP_HOST=
 export SMTP_PORT=

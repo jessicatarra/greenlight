@@ -15,7 +15,7 @@ jobs:
       - run: flyctl deploy --remote-only
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
-#          GREENLIGHT_DB_DSN: ${{ secrets.GREENLIGHT_DB_DSN }}
+#          DATABASE_URL: ${{ secrets.DATABASE_URL }}
 #          MIGRATION_URL: ${{ secrets.MIGRATION_URL }}
           SMTP_HOST: ${{ env.SMTP_HOST }}
           SMTP_PORT: ${{ env.SMTP_PORT }}
