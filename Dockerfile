@@ -5,7 +5,9 @@ WORKDIR /bin
 COPY . .
 RUN go mod download && go mod verify && go mod vendor
 ARG API_VERSION="v0.0.0+unknown"
-RUN go build -ldflags "-X 'main.version=$API_VERSION'" -o api ./cmd/api
+ARG API_PORT="unknown"
+ARG API_ENV="unknown"
+RUN go build -ldflags "-X 'main.version=$API_VERSION' -X 'main.port=$API_PORT' -X 'main.env=$API_ENV'" -o api ./cmd/api
 
 # Run stage
 FROM golang:${GO_VERSION}-alpine3.17 AS build-release-stage
