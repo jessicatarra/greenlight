@@ -6,8 +6,6 @@
 app = "go-greenlight-api"
 primary_region = "gig"
 
-[build]
-
 [http_service]
   internal_port = 8080
   force_https = true

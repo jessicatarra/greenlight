@@ -20,6 +20,8 @@ services:
       context: .
       args:
         API_VERSION: "v1.0.0"
+        API_PORT: "8080"
+        API_ENV: "staging"
       dockerfile: Dockerfile
     container_name: greenlight-api
     hostname: greenlight-api

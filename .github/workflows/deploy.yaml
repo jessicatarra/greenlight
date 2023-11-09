@@ -2,25 +2,37 @@ name: Fly Deploy
 on:
   push:
     branches: [ "main" ]
+
+env:
+  FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+
 jobs:
   audit:
     uses: ./.github/workflows/audit.yaml
   deploy:
     name: Deploy app
     runs-on: ubuntu-latest
-    environment: development
+    needs:
+      - audit
     steps:
       - uses: actions/checkout@v3
       - uses: superfly/flyctl-actions/setup-flyctl@master
-      - run: echo "API_VERSION=$(git describe --always --dirty --tags --long)"
-      - run: flyctl deploy --remote-only
         env:
-          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
-          SMTP_HOST: ${{ env.SMTP_HOST }}
-          SMTP_PORT: ${{ env.SMTP_PORT }}
-          SMTP_USERNAME: ${{ env.SMTP_USERNAME }}
+          SMTP_HOST: ${{ vars.SMTP_HOST }}
+          SMTP_PORT: ${{ vars.SMTP_PORT }}
+          SMTP_USERNAME: ${{ secrets.SMTP_USERNAME }}
           SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
-          SMTP_SENDER: ${{ env.SMTP_SENDER }}
-          CORS_TRUSTED_ORIGINS: ${{ env.CORS_TRUSTED_ORIGINS }}
-          API_PORT: ${{ env.API_PORT }}
-          API_ENV: ${{ env.API_ENV }}
+          SMTP_SENDER: ${{ vars.SMTP_SENDER }}
+          CORS_TRUSTED_ORIGINS: ${{ vars.CORS_TRUSTED_ORIGINS }}
+      - run: |
+          flyctl deploy \
+            --build-arg API_VERSION=$(git describe --always --dirty --tags --long) \
+            --build-arg API_PORT=8080 \
+            --build-arg API_ENV=staging \
+            --build-arg SMTP_HOST=$SMTP_HOST \
+            --build-arg SMTP_PORT=$SMTP_PORT \
+            --build-arg SMTP_USERNAME=$SMTP_USERNAME \
+            --build-arg SMTP_PASSWORD=$SMTP_PASSWORD \
+            --build-arg SMTP_SENDER=$SMTP_SENDER \
+            --build-arg CORS_TRUSTED_ORIGINS=$CORS_TRUSTED_ORIGINS \
+            --remote-only

@@ -24,6 +24,8 @@ import (
 
 var (
 	version string
+	port    string
+	env     string
 )
 
 type config struct {
@@ -58,8 +60,9 @@ type application struct {
 func main() {
 	var cfg config
 
-	flag.IntVar(&cfg.port, "port", 8080, "API server port")
-	flag.StringVar(&cfg.env, "env", "development", "Environment (development|staging|production)")
+	intPort, _ := strconv.Atoi(port)
+	flag.IntVar(&cfg.port, "port", intPort, "API server port")
+	flag.StringVar(&cfg.env, "env", env, "Environment (development|staging|production)")
 	flag.StringVar(&cfg.db.dsn, "db-dsn", os.Getenv(
 		"DATABASE_URL"), "PostgreSQL DSN")
 	flag.IntVar(&cfg.db.maxOpenConns, "db-max-open-conns", 25, "PostgreSQL max open connections")
