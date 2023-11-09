@@ -33,6 +33,8 @@ jobs:
 #          "export SMTP_PASSWORD=${{ secrets.SMTP_PASSWORD }}" >> .envrc
 #          "export SMTP_SENDER=${{ secrets.SMTP_SENDER }}" >> .envrc
 #          "export CORS_TRUSTED_ORIGINS=${{ secrets.CORS_TRUSTED_ORIGINS }}" >> .envrc
+#          "export API_PORT=${{ secrets.API_PORT }}" >> .envrc
+#          "export API_ENV=${{ secrets.API_ENV }}" >> .envrc
 
       - name: Run make audit
         run: make audit

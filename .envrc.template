@@ -6,3 +6,5 @@ export SMTP_USERNAME=
 export SMTP_PASSWORD=
 export SMTP_SENDER=
 export CORS_TRUSTED_ORIGINS=
+export API_PORT=
+export API_ENV=

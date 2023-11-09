@@ -15,6 +15,22 @@ services:
       POSTGRES_DB: "greenlight"
     restart: always
 
+  greenlight:
+    build:
+      context: .
+      args:
+        API_VERSION: "v1.0.0"
+      dockerfile: Dockerfile
+    container_name: greenlight-api
+    hostname: greenlight-api
+    env_file: .env
+    ports:
+      - "8080:8080"
+    depends_on:
+      - database
+    command: [ "/bin/api"]
+
+
 
 volumes:
   database:
