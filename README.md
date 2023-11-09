@@ -27,22 +27,8 @@ See more here: https://lets-go-further.alexedwards.net/
 3. **Install Dependencies**: Change to the project directory and use the following command to install the dependencies:
 
     ```shell
-    go mod tidy
+    go mod download
     ```
-   
-Also make sure to install the migrate tool for database migrations. Detailed installation instructions for different operating systems can be found here, but on macOS you should be able to install it with the command:
-
-   ```shell
-      brew install golang-migrate
-   ```
-And on Linux and Windows, the easiest method is to download a pre-built binary and move it to a location on your system path. For example, on Linux:
-
-```shell
-
-   curl -L https://github.com/golang-migrate/migrate/releases/download/v4.14.1/migrate.linux-amd64.tar.gz | tar xvz &
-   mv migrate.linux-amd64 $GOPATH/bin/migrate
-
-```
 
 4. **Environment Variables**: Create a `.envrc` file in the project directory and add the following environment variables with their corresponding values:
 
@@ -94,5 +80,36 @@ CORS_TRUSTED_ORIGINS: A space-separated list of trusted origins for Cross-Origin
     ```shell
    make run/api/help
     ```
+
+## Migrations
+
+To manage SQL migrations in this project we’re going to use the migrate command-line tool (which itself is written in Go).
+
+Detailed installation instructions for different operating systems can be found here, but on macOS you should be able to install it with the command:
+
+   ```shell
+      brew install golang-migrate
+   ```
+And on Linux and Windows, the easiest method is to download a pre-built binary and move it to a location on your system path. For example, on Linux:
+
+```shell
+
+   curl -L https://github.com/golang-migrate/migrate/releases/download/v4.14.1/migrate.linux-amd64.tar.gz | tar xvz &
+   mv migrate.linux-amd64 $GOPATH/bin/migrate
+
+```
+
+## Quality Controlling Code
+
+In order to check, test and tidy up our codebase automatically, run the following command:
+
+```shell
+   make audit
+```
+
+Also, to successfully run the previous command, you would need to download the following package:
+
+- Use the third-party [staticcheck](https://staticcheck.io/) tool to carry out some [additional static analysis checks](https://staticcheck.dev/docs/checks).
+
 
 Feel free to explore the code and experiment with the additional features and improvements implemented in this version of the Greenlight application.
