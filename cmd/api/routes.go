@@ -2,8 +2,10 @@ package main
 
 import (
 	"expvar"
+	_ "github.com/jessicatarra/greenlight/docs"
 	"github.com/julienschmidt/httprouter"
 	"github.com/justinas/alice"
+	httpSwagger "github.com/swaggo/http-swagger"
 	"net/http"
 )
 
@@ -27,6 +29,8 @@ func (app *application) routes() http.Handler {
 	router.HandlerFunc(http.MethodPost, "/v1/tokens/authentication", app.createAuthenticationTokenHandler)
 
 	router.Handler(http.MethodGet, "/v1/metrics", expvar.Handler())
+
+	router.Handler(http.MethodGet, "/swagger/:any", httpSwagger.WrapHandler)
 
 	return alice.New(app.recoverPanic, app.rateLimit, app.logRequest, app.authenticate, app.enableCORS).Then(router)
 }

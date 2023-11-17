@@ -8,11 +8,21 @@ import (
 	"time"
 )
 
+type createAuthTokenRequest struct {
+	Email    string `json:"email"`
+	Password string `json:"password"`
+}
+
+// @Summary Create authentication token
+// @Description Creates an authentication token for a user
+// @Tags Authentication
+// @Accept json
+// @Produce json
+// @Param request body createAuthTokenRequest true "Request body"
+// @Success 201 {object} data.Token "Authentication token"
+// @Router /tokens/authentication [post]
 func (app *application) createAuthenticationTokenHandler(writer http.ResponseWriter, request *http.Request) {
-	var input struct {
-		Email    string `json:"email"`
-		Password string `json:"password"`
-	}
+	input := createAuthTokenRequest{}
 
 	err := app.readJSON(writer, request, &input)
 	if err != nil {

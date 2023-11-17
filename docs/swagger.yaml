@@ -1,0 +1,300 @@
+basePath: /v1
+definitions:
+  data.Movie:
+    properties:
+      genres:
+        items:
+          type: string
+        type: array
+      id:
+        type: integer
+      runtime:
+        example: "0"
+        type: string
+      title:
+        type: string
+      version:
+        type: integer
+      year:
+        type: integer
+    type: object
+  data.Token:
+    properties:
+      expiry:
+        type: string
+      token:
+        type: string
+    type: object
+  data.User:
+    properties:
+      activated:
+        type: boolean
+      created_at:
+        type: string
+      email:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+    type: object
+  main.createAuthTokenRequest:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    type: object
+  main.createMovieRequest:
+    properties:
+      genres:
+        items:
+          type: string
+        type: array
+      runtime:
+        type: integer
+      title:
+        type: string
+      year:
+        type: integer
+    type: object
+  main.createUserRequest:
+    properties:
+      email:
+        type: string
+      name:
+        type: string
+      password:
+        type: string
+    type: object
+  main.updateMovieRequest:
+    properties:
+      genres:
+        items:
+          type: string
+        type: array
+      runtime:
+        type: integer
+      title:
+        type: string
+      year:
+        type: integer
+    type: object
+info:
+  contact:
+    name: Jessica Tarra
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  title: Greenlight API Docs
+  version: 1.0.0
+paths:
+  /movies:
+    get:
+      consumes:
+      - application/json
+      description: Fetch a list of movies with server-side pagination
+      parameters:
+      - description: Movie title
+        in: query
+        name: title
+        type: string
+      - collectionFormat: csv
+        description: Movie genres
+        in: query
+        items:
+          type: string
+        name: genres
+        type: array
+      - description: Page number
+        in: query
+        name: page
+        type: integer
+      - description: Number of movies per page
+        in: query
+        name: page_size
+        type: integer
+      - description: Sort order
+        in: query
+        name: sort
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Movie list
+          schema:
+            items:
+              $ref: '#/definitions/data.Movie'
+            type: array
+      security:
+      - ApiKeyAuth: []
+      summary: List movies with pagination
+      tags:
+      - Movies
+    post:
+      consumes:
+      - application/json
+      description: Create a new movie
+      parameters:
+      - description: Request body
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/main.createMovieRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Movie created
+          schema:
+            $ref: '#/definitions/data.Movie'
+      security:
+      - ApiKeyAuth: []
+      summary: Create a movie
+      tags:
+      - Movies
+  /movies/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a movie by its ID
+      parameters:
+      - description: Movie ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+      security:
+      - ApiKeyAuth: []
+      summary: Delete a movie by ID
+      tags:
+      - Movies
+    get:
+      consumes:
+      - application/json
+      description: Retrieve a movie by its ID
+      parameters:
+      - description: Movie ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Movie details
+          schema:
+            $ref: '#/definitions/data.Movie'
+      security:
+      - ApiKeyAuth: []
+      summary: Get a movie by ID
+      tags:
+      - Movies
+    put:
+      consumes:
+      - application/json
+      description: Update an existing movie
+      parameters:
+      - description: Movie ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Request body
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/main.updateMovieRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Movie updated
+          schema:
+            $ref: '#/definitions/data.Movie'
+      security:
+      - ApiKeyAuth: []
+      summary: Update a movie by ID
+      tags:
+      - Movies
+  /tokens/authentication:
+    post:
+      consumes:
+      - application/json
+      description: Creates an authentication token for a user
+      parameters:
+      - description: Request body
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/main.createAuthTokenRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Authentication token
+          schema:
+            $ref: '#/definitions/data.Token'
+      summary: Create authentication token
+      tags:
+      - Authentication
+  /users:
+    post:
+      consumes:
+      - application/json
+      description: Registers a new user.
+      parameters:
+      - description: User registration data
+        in: body
+        name: name
+        required: true
+        schema:
+          $ref: '#/definitions/main.createUserRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/data.User'
+      summary: Register User
+      tags:
+      - Users
+  /users/activated:
+    put:
+      consumes:
+      - application/json
+      description: Activates a user account using a token that was previously sent
+        when successfully register a new user
+      parameters:
+      - description: Token for user activation
+        in: query
+        name: token
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/data.User'
+      summary: Activate User
+      tags:
+      - Users
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"
