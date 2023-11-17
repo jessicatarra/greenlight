@@ -8,7 +8,7 @@ import (
 	"time"
 )
 
-type Input struct {
+type createUserRequest struct {
 	Name     string `json:"name"`
 	Email    string `json:"email"`
 	Password string `json:"password"`
@@ -16,12 +16,12 @@ type Input struct {
 
 // @Summary Activate User
 // @Description Activates a user account using a token that was previously sent when successfully register a new user
-// @Tags users
+// @Tags Users
 // @Accept json
 // @Produce  json
 // @Param token query string true "Token for user activation"
 // @Success 200 {object} data.User
-// @Router /users/activate [put]
+// @Router /users/activated [put]
 func (app *application) activateUserHandler(writer http.ResponseWriter, request *http.Request) {
 	var input struct {
 		TokenPlaintext string
@@ -77,14 +77,14 @@ func (app *application) activateUserHandler(writer http.ResponseWriter, request 
 
 // @Summary Register User
 // @Description Registers a new user.
-// @Tags users
+// @Tags Users
 // @Accept json
 // @Produce  json
-// @Param name body Input true "User registration data"
+// @Param name body createUserRequest true "User registration data"
 // @Success 201 {object} data.User
 // @Router /users [post]
 func (app *application) registerUserHandler(writer http.ResponseWriter, request *http.Request) {
-	input := Input{}
+	input := createUserRequest{}
 
 	err := app.readJSON(writer, request, &input)
 	if err != nil {

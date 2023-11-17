@@ -1,5 +1,12 @@
 basePath: /v1
 definitions:
+  data.Token:
+    properties:
+      expiry:
+        type: string
+      token:
+        type: string
+    type: object
   data.User:
     properties:
       activated:
@@ -13,7 +20,14 @@ definitions:
       name:
         type: string
     type: object
-  main.Input:
+  main.createAuthTokenRequest:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    type: object
+  main.createUserRequest:
     properties:
       email:
         type: string
@@ -45,7 +59,29 @@ paths:
       - ApiKeyAuth: []
       summary: Fetch list of with server pagination
       tags:
-      - movies
+      - Movies
+  /tokens/authentication:
+    post:
+      consumes:
+      - application/json
+      description: Creates an authentication token for a user
+      parameters:
+      - description: Request body
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/main.createAuthTokenRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Authentication token
+          schema:
+            $ref: '#/definitions/data.Token'
+      summary: Create authentication token
+      tags:
+      - Authentication
   /users:
     post:
       consumes:
@@ -57,7 +93,7 @@ paths:
         name: name
         required: true
         schema:
-          $ref: '#/definitions/main.Input'
+          $ref: '#/definitions/main.createUserRequest'
       produces:
       - application/json
       responses:
@@ -67,12 +103,13 @@ paths:
             $ref: '#/definitions/data.User'
       summary: Register User
       tags:
-      - users
-  /users/activate:
+      - Users
+  /users/activated:
     put:
       consumes:
       - application/json
-      description: Activates a user account using a token.
+      description: Activates a user account using a token that was previously sent
+        when successfully register a new user
       parameters:
       - description: Token for user activation
         in: query
@@ -88,7 +125,7 @@ paths:
             $ref: '#/definitions/data.User'
       summary: Activate User
       tags:
-      - users
+      - Users
 securityDefinitions:
   ApiKeyAuth:
     in: header

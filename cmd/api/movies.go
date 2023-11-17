@@ -173,7 +173,7 @@ func (app *application) deleteMovieHandler(writer http.ResponseWriter, request *
 
 // @Summary Fetch list of with server pagination
 // @Description Fetch movies with server pagination
-// @Tags movies
+// @Tags Movies
 // @Accept  json
 // @Produce  json
 // @Security ApiKeyAuth

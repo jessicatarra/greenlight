@@ -36,12 +36,46 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "movies"
+                    "Movies"
                 ],
                 "summary": "Fetch list of with server pagination",
                 "responses": {
                     "200": {
                         "description": "OK"
+                    }
+                }
+            }
+        },
+        "/tokens/authentication": {
+            "post": {
+                "description": "Creates an authentication token for a user",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Create authentication token",
+                "parameters": [
+                    {
+                        "description": "Request body",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/main.createAuthTokenRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Authentication token",
+                        "schema": {
+                            "$ref": "#/definitions/data.Token"
+                        }
                     }
                 }
             }
@@ -56,7 +90,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "users"
+                    "Users"
                 ],
                 "summary": "Register User",
                 "parameters": [
@@ -66,7 +100,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/main.Input"
+                            "$ref": "#/definitions/main.createUserRequest"
                         }
                     }
                 ],
@@ -80,9 +114,9 @@ const docTemplate = `{
                 }
             }
         },
-        "/users/activate": {
+        "/users/activated": {
             "put": {
-                "description": "Activates a user account using a token.",
+                "description": "Activates a user account using a token that was previously sent when successfully register a new user",
                 "consumes": [
                     "application/json"
                 ],
@@ -90,7 +124,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "users"
+                    "Users"
                 ],
                 "summary": "Activate User",
                 "parameters": [
@@ -114,6 +148,17 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "data.Token": {
+            "type": "object",
+            "properties": {
+                "expiry": {
+                    "type": "string"
+                },
+                "token": {
+                    "type": "string"
+                }
+            }
+        },
         "data.User": {
             "type": "object",
             "properties": {
@@ -134,7 +179,18 @@ const docTemplate = `{
                 }
             }
         },
-        "main.Input": {
+        "main.createAuthTokenRequest": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                }
+            }
+        },
+        "main.createUserRequest": {
             "type": "object",
             "properties": {
                 "email": {
