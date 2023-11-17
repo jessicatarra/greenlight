@@ -32,6 +32,5 @@ func (app *application) routes() http.Handler {
 
 	router.Handler(http.MethodGet, "/swagger/:any", httpSwagger.WrapHandler)
 
-	//return alice.New(app.recoverPanic, app.rateLimit, app.logRequest, app.authenticate, app.enableCORS).Then(router)
-	return alice.New(app.recoverPanic, app.logRequest, app.authenticate, app.enableCORS).Then(router)
+	return alice.New(app.recoverPanic, app.rateLimit, app.logRequest, app.authenticate, app.enableCORS).Then(router)
 }
