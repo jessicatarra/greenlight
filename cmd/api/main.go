@@ -57,6 +57,15 @@ type application struct {
 	wg     sync.WaitGroup
 }
 
+// @title Greenlight API Docs
+// @version 1.0.0
+// @contact.name Jessica Tarra
+// @license.name Apache 2.0
+// @license.url http://www.apache.org/licenses/LICENSE-2.0.html
+// @BasePath /v1
+// @securityDefinitions.apikey ApiKeyAuth
+// @in header
+// @name Authorization
 func main() {
 	var cfg config
 

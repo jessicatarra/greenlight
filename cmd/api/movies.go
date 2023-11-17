@@ -171,6 +171,14 @@ func (app *application) deleteMovieHandler(writer http.ResponseWriter, request *
 	}
 }
 
+// @Summary Fetch list of with server pagination
+// @Description Fetch movies with server pagination
+// @Tags movies
+// @Accept  json
+// @Produce  json
+// @Security ApiKeyAuth
+// @Success 200
+// @Router /movies [get]
 func (app *application) listMoviesHandler(writer http.ResponseWriter, request *http.Request) {
 	var input struct {
 		Title  string

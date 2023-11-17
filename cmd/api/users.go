@@ -8,6 +8,25 @@ import (
 	"time"
 )
 
+type Input struct {
+	Name     string `json:"name"`
+	Email    string `json:"email"`
+	Password string `json:"password"`
+}
+
+// @Summary Activate User
+// @Description Activates a user account using a token.
+// @Tags users
+// @Accept json
+// @Produce  json
+// @Param token query string true "Token for user activation"
+// @Success 200
+// @Failure 400
+// @Failure 401
+// @Failure 404
+// @Failure 409
+// @Failure 500
+// @Router /users/activate [put]
 func (app *application) activateUserHandler(writer http.ResponseWriter, request *http.Request) {
 	var input struct {
 		TokenPlaintext string
@@ -61,12 +80,20 @@ func (app *application) activateUserHandler(writer http.ResponseWriter, request 
 	}
 }
 
+// @Summary Register User
+// @Description Registers a new user.
+// @Tags users
+// @Accept json
+// @Produce  json
+// @Param name body Input true "User registration data"
+// @Success 201
+// @Failure 400
+// @Failure 401
+// @Failure 409
+// @Failure 500
+// @Router /users [post]
 func (app *application) registerUserHandler(writer http.ResponseWriter, request *http.Request) {
-	var input struct {
-		Name     string `json:"name"`
-		Email    string `json:"email"`
-		Password string `json:"password"`
-	}
+	input := Input{}
 
 	err := app.readJSON(writer, request, &input)
 	if err != nil {

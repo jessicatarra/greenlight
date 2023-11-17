@@ -31,6 +31,13 @@ vendor:
 	@echo 'Vendoring dependencies...'
 	go mod vendor
 
+.PHONY: generate/api/docs
+generate/api/docs:
+	@echo 'Remove docs...'
+	rm -rf docs
+	@echo 'Generate updated docs folder'
+	swag init -d cmd/api --parseDependency --parseInternal --parseDepth 2
+
 # ====================================================================================
 # # BUILD
 # ==================================================================================== #
