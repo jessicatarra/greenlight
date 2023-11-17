@@ -12,7 +12,7 @@ See more here: https://lets-go-further.alexedwards.net/
 
 
 1. **Docker Compose**: Included a Docker Compose file to simplify the setup process and allow running the database locally. 
-2. **API Documentation**: [TODO]
+2. **API Documentation**: https://greenlight.tarralva.com/swagger/index.html
 
 
 ## Getting Started
@@ -73,7 +73,7 @@ CORS_TRUSTED_ORIGINS: A space-separated list of trusted origins for Cross-Origin
     make run/api
     ```
 
-7. **[TODO] API Documentation**: The API documentation can be accessed at [http://localhost:4000/docs](http://localhost:8080/docs) once the application is running.
+7. **API Documentation**: The API documentation can be accessed at [https://localhost:4000/swagger/index.html](http://localhost:8080/docs) once the application is running.
 
 8. **(Optional) View the Help Section**: If you want to see the help section of the app, you can run the following command:
 
