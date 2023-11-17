@@ -1,5 +1,23 @@
 basePath: /v1
 definitions:
+  data.Movie:
+    properties:
+      genres:
+        items:
+          type: string
+        type: array
+      id:
+        type: integer
+      runtime:
+        example: "0"
+        type: string
+      title:
+        type: string
+      version:
+        type: integer
+      year:
+        type: integer
+    type: object
   data.Token:
     properties:
       expiry:
@@ -27,6 +45,19 @@ definitions:
       password:
         type: string
     type: object
+  main.createMovieRequest:
+    properties:
+      genres:
+        items:
+          type: string
+        type: array
+      runtime:
+        type: integer
+      title:
+        type: string
+      year:
+        type: integer
+    type: object
   main.createUserRequest:
     properties:
       email:
@@ -35,6 +66,19 @@ definitions:
         type: string
       password:
         type: string
+    type: object
+  main.updateMovieRequest:
+    properties:
+      genres:
+        items:
+          type: string
+        type: array
+      runtime:
+        type: integer
+      title:
+        type: string
+      year:
+        type: integer
     type: object
 info:
   contact:
@@ -49,7 +93,79 @@ paths:
     get:
       consumes:
       - application/json
-      description: Fetch movies with server pagination
+      description: Fetch a list of movies with server-side pagination
+      parameters:
+      - description: Movie title
+        in: query
+        name: title
+        type: string
+      - collectionFormat: csv
+        description: Movie genres
+        in: query
+        items:
+          type: string
+        name: genres
+        type: array
+      - description: Page number
+        in: query
+        name: page
+        type: integer
+      - description: Number of movies per page
+        in: query
+        name: page_size
+        type: integer
+      - description: Sort order
+        in: query
+        name: sort
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Movie list
+          schema:
+            items:
+              $ref: '#/definitions/data.Movie'
+            type: array
+      security:
+      - ApiKeyAuth: []
+      summary: List movies with pagination
+      tags:
+      - Movies
+    post:
+      consumes:
+      - application/json
+      description: Create a new movie
+      parameters:
+      - description: Request body
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/main.createMovieRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Movie created
+          schema:
+            $ref: '#/definitions/data.Movie'
+      security:
+      - ApiKeyAuth: []
+      summary: Create a movie
+      tags:
+      - Movies
+  /movies/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a movie by its ID
+      parameters:
+      - description: Movie ID
+        in: path
+        name: id
+        required: true
+        type: integer
       produces:
       - application/json
       responses:
@@ -57,7 +173,57 @@ paths:
           description: OK
       security:
       - ApiKeyAuth: []
-      summary: Fetch list of with server pagination
+      summary: Delete a movie by ID
+      tags:
+      - Movies
+    get:
+      consumes:
+      - application/json
+      description: Retrieve a movie by its ID
+      parameters:
+      - description: Movie ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Movie details
+          schema:
+            $ref: '#/definitions/data.Movie'
+      security:
+      - ApiKeyAuth: []
+      summary: Get a movie by ID
+      tags:
+      - Movies
+    put:
+      consumes:
+      - application/json
+      description: Update an existing movie
+      parameters:
+      - description: Movie ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Request body
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/main.updateMovieRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Movie updated
+          schema:
+            $ref: '#/definitions/data.Movie'
+      security:
+      - ApiKeyAuth: []
+      summary: Update a movie by ID
       tags:
       - Movies
   /tokens/authentication:

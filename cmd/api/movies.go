@@ -8,13 +8,31 @@ import (
 	"net/http"
 )
 
+type createMovieRequest struct {
+	Title   string   `json:"title"`
+	Year    int32    `json:"year"`
+	Runtime int32    `json:"runtime"`
+	Genres  []string `json:"genres"`
+}
+
+type updateMovieRequest struct {
+	Title   *string  `json:"title"`
+	Year    *int32   `json:"year"`
+	Runtime *int32   `json:"runtime"`
+	Genres  []string `json:"genres"`
+}
+
+// @Summary Create a movie
+// @Description Create a new movie
+// @Tags Movies
+// @Accept json
+// @Produce json
+// @Security ApiKeyAuth
+// @Param request body createMovieRequest true "Request body"
+// @Success 201 {object} data.Movie "Movie created"
+// @Router /movies [post]
 func (app *application) createMovieHandler(writer http.ResponseWriter, request *http.Request) {
-	var input struct {
-		Title   string   `json:"title"`
-		Year    int32    `json:"year"`
-		Runtime int32    `json:"runtime"`
-		Genres  []string `json:"genres"`
-	}
+	input := createMovieRequest{}
 
 	err := app.readJSON(writer, request, &input)
 	if err != nil {
@@ -53,6 +71,15 @@ func (app *application) createMovieHandler(writer http.ResponseWriter, request *
 	}
 }
 
+// @Summary Get a movie by ID
+// @Description Retrieve a movie by its ID
+// @Tags Movies
+// @Accept json
+// @Produce json
+// @Security ApiKeyAuth
+// @Param id path int true "Movie ID"
+// @Success 200 {object} data.Movie "Movie details"
+// @Router /movies/{id} [get]
 func (app *application) showMovieHandler(writer http.ResponseWriter, request *http.Request) {
 	id, err := app.readIDParam(request)
 	if err != nil {
@@ -77,6 +104,16 @@ func (app *application) showMovieHandler(writer http.ResponseWriter, request *ht
 	}
 }
 
+// @Summary Update a movie by ID
+// @Description Update an existing movie
+// @Tags Movies
+// @Accept json
+// @Produce json
+// @Security ApiKeyAuth
+// @Param id path int true "Movie ID"
+// @Param request body updateMovieRequest true "Request body"
+// @Success 200 {object} data.Movie "Movie updated"
+// @Router /movies/{id} [put]
 func (app *application) updateMovieHandler(writer http.ResponseWriter, request *http.Request) {
 	id, err := app.readIDParam(request)
 	if err != nil {
@@ -95,12 +132,7 @@ func (app *application) updateMovieHandler(writer http.ResponseWriter, request *
 		return
 	}
 
-	var input struct {
-		Title   *string  `json:"title"`
-		Year    *int32   `json:"year"`
-		Runtime *int32   `json:"runtime"`
-		Genres  []string `json:"genres"`
-	}
+	input := updateMovieRequest{}
 
 	err = app.readJSON(writer, request, &input)
 	if err != nil {
@@ -147,6 +179,15 @@ func (app *application) updateMovieHandler(writer http.ResponseWriter, request *
 	}
 }
 
+// @Summary Delete a movie by ID
+// @Description Delete a movie by its ID
+// @Tags Movies
+// @Accept json
+// @Produce json
+// @Security ApiKeyAuth
+// @Param id path int true "Movie ID"
+// @Success 200
+// @Router /movies/{id} [delete]
 func (app *application) deleteMovieHandler(writer http.ResponseWriter, request *http.Request) {
 	id, err := app.readIDParam(request)
 	if err != nil {
@@ -171,13 +212,18 @@ func (app *application) deleteMovieHandler(writer http.ResponseWriter, request *
 	}
 }
 
-// @Summary Fetch list of with server pagination
-// @Description Fetch movies with server pagination
+// @Summary List movies with pagination
+// @Description Fetch a list of movies with server-side pagination
 // @Tags Movies
-// @Accept  json
-// @Produce  json
+// @Accept json
+// @Produce json
 // @Security ApiKeyAuth
-// @Success 200
+// @Param title query string false "Movie title"
+// @Param genres query []string false "Movie genres"
+// @Param page query int false "Page number"
+// @Param page_size query int false "Number of movies per page"
+// @Param sort query string false "Sort order"
+// @Success 200 {object} []data.Movie "Movie list"
 // @Router /movies [get]
 func (app *application) listMoviesHandler(writer http.ResponseWriter, request *http.Request) {
 	var input struct {
