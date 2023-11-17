@@ -1,5 +1,18 @@
 basePath: /v1
 definitions:
+  data.User:
+    properties:
+      activated:
+        type: boolean
+      created_at:
+        type: string
+      email:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+    type: object
   main.Input:
     properties:
       email:
@@ -50,14 +63,8 @@ paths:
       responses:
         "201":
           description: Created
-        "400":
-          description: Bad Request
-        "401":
-          description: Unauthorized
-        "409":
-          description: Conflict
-        "500":
-          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/data.User'
       summary: Register User
       tags:
       - users
@@ -77,16 +84,8 @@ paths:
       responses:
         "200":
           description: OK
-        "400":
-          description: Bad Request
-        "401":
-          description: Unauthorized
-        "404":
-          description: Not Found
-        "409":
-          description: Conflict
-        "500":
-          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/data.User'
       summary: Activate User
       tags:
       - users

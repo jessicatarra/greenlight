@@ -15,17 +15,12 @@ type Input struct {
 }
 
 // @Summary Activate User
-// @Description Activates a user account using a token.
+// @Description Activates a user account using a token that was previously sent when successfully register a new user
 // @Tags users
 // @Accept json
 // @Produce  json
 // @Param token query string true "Token for user activation"
-// @Success 200
-// @Failure 400
-// @Failure 401
-// @Failure 404
-// @Failure 409
-// @Failure 500
+// @Success 200 {object} data.User
 // @Router /users/activate [put]
 func (app *application) activateUserHandler(writer http.ResponseWriter, request *http.Request) {
 	var input struct {
@@ -86,11 +81,7 @@ func (app *application) activateUserHandler(writer http.ResponseWriter, request 
 // @Accept json
 // @Produce  json
 // @Param name body Input true "User registration data"
-// @Success 201
-// @Failure 400
-// @Failure 401
-// @Failure 409
-// @Failure 500
+// @Success 201 {object} data.User
 // @Router /users [post]
 func (app *application) registerUserHandler(writer http.ResponseWriter, request *http.Request) {
 	input := Input{}
