@@ -6,6 +6,12 @@
 app = "go-greenlight-api"
 primary_region = "gig"
 
+[env]
+  SMTP_HOST="sandbox.smtp.mailtrap.io"
+  SMTP_PORT=25
+  SMTP_SENDER="Greenlight <no-reply@tarralva.com>"
+  CORS_TRUSTED_ORIGINS=""
+
 [http_service]
   internal_port = 8080
   force_https = true
