@@ -2,7 +2,7 @@ package main
 
 import (
 	"errors"
-	"github.com/jessicatarra/greenlight/internal/data"
+	"github.com/jessicatarra/greenlight/internal/database"
 	"github.com/jessicatarra/greenlight/internal/validator"
 	"github.com/pascaldekloe/jwt"
 	"net/http"
@@ -34,8 +34,8 @@ func (app *application) createAuthenticationTokenHandler(writer http.ResponseWri
 
 	v := validator.New()
 
-	data.ValidateEmail(v, input.Email)
-	data.ValidatePasswordPlaintext(v, input.Password)
+	database.ValidateEmail(v, input.Email)
+	database.ValidatePasswordPlaintext(v, input.Password)
 
 	if !v.Valid() {
 		app.failedValidationResponse(writer, request, v.Errors)
@@ -45,7 +45,7 @@ func (app *application) createAuthenticationTokenHandler(writer http.ResponseWri
 	user, err := app.models.Users.GetByEmail(input.Email)
 	if err != nil {
 		switch {
-		case errors.Is(err, data.ErrRecordNotFound):
+		case errors.Is(err, database.ErrRecordNotFound):
 			app.invalidCredentialsResponse(writer, request)
 		default:
 			app.serverErrorResponse(writer, request, err)

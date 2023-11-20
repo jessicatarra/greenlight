@@ -13,8 +13,6 @@ RUN go build -ldflags "-X 'main.version=$API_VERSION' -X 'main.port=$API_PORT' -
 FROM golang:${GO_VERSION}-alpine3.17 AS build-release-stage
 WORKDIR /bin
 COPY --from=builder /bin/api .
-COPY ./migrations ./migrations
-
 
 EXPOSE 8080
 ENTRYPOINT [ "/bin/api" ]

@@ -23,7 +23,6 @@ jobs:
         run: |
           touch .envrc
 #          "export DATABASE_URL=${{ secrets.DATABASE_URL }}" >> .envrc
-#          "export MIGRATION_URL=${{ secrets.MIGRATION_URL }}" >> .envrc
 #          "export SMTP_HOST=${{ secrets.SMTP_HOST }}" >> .envrc
 #          "export SMTP_PORT=${{ secrets.SMTP_PORT }}" >> .envrc
 #          "export SMTP_USERNAME=${{ secrets.SMTP_USERNAME }}" >> .envrc

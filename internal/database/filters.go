@@ -1,4 +1,4 @@
-package data
+package database
 
 import (
 	"github.com/jessicatarra/greenlight/internal/validator"

@@ -3,7 +3,7 @@ package main
 import (
 	"errors"
 	"fmt"
-	"github.com/jessicatarra/greenlight/internal/data"
+	"github.com/jessicatarra/greenlight/internal/database"
 	"github.com/jessicatarra/greenlight/internal/validator"
 	"net/http"
 )
@@ -40,7 +40,7 @@ func (app *application) createMovieHandler(writer http.ResponseWriter, request *
 		return
 	}
 
-	movie := &data.Movie{
+	movie := &database.Movie{
 		Title:   input.Title,
 		Year:    input.Year,
 		Runtime: input.Runtime,
@@ -49,7 +49,7 @@ func (app *application) createMovieHandler(writer http.ResponseWriter, request *
 
 	v := validator.New()
 
-	data.ValidateMovie(v, movie)
+	database.ValidateMovie(v, movie)
 
 	if !v.Valid() {
 		app.failedValidationResponse(writer, request, v.Errors)
@@ -90,7 +90,7 @@ func (app *application) showMovieHandler(writer http.ResponseWriter, request *ht
 	movie, err := app.models.Movies.Get(id)
 	if err != nil {
 		switch {
-		case errors.Is(err, data.ErrRecordNotFound):
+		case errors.Is(err, database.ErrRecordNotFound):
 			app.notFoundResponse(writer, request)
 		default:
 			app.serverErrorResponse(writer, request, err)
@@ -124,7 +124,7 @@ func (app *application) updateMovieHandler(writer http.ResponseWriter, request *
 	movie, err := app.models.Movies.Get(id)
 	if err != nil {
 		switch {
-		case errors.Is(err, data.ErrRecordNotFound):
+		case errors.Is(err, database.ErrRecordNotFound):
 			app.notFoundResponse(writer, request)
 		default:
 			app.serverErrorResponse(writer, request, err)
@@ -157,7 +157,7 @@ func (app *application) updateMovieHandler(writer http.ResponseWriter, request *
 
 	v := validator.New()
 
-	if data.ValidateMovie(v, movie); !v.Valid() {
+	if database.ValidateMovie(v, movie); !v.Valid() {
 		app.failedValidationResponse(writer, request, v.Errors)
 		return
 	}
@@ -165,7 +165,7 @@ func (app *application) updateMovieHandler(writer http.ResponseWriter, request *
 	err = app.models.Movies.Update(movie)
 	if err != nil {
 		switch {
-		case errors.Is(err, data.ErrEditConflict):
+		case errors.Is(err, database.ErrEditConflict):
 			app.editConflictResponse(writer, request)
 		default:
 			app.serverErrorResponse(writer, request, err)
@@ -198,7 +198,7 @@ func (app *application) deleteMovieHandler(writer http.ResponseWriter, request *
 	err = app.models.Movies.Delete(id)
 	if err != nil {
 		switch {
-		case errors.Is(err, data.ErrRecordNotFound):
+		case errors.Is(err, database.ErrRecordNotFound):
 			app.notFoundResponse(writer, request)
 		default:
 			app.serverErrorResponse(writer, request, err)
@@ -229,7 +229,7 @@ func (app *application) listMoviesHandler(writer http.ResponseWriter, request *h
 	var input struct {
 		Title  string
 		Genres []string
-		data.Filters
+		database.Filters
 	}
 
 	v := validator.New()
@@ -246,7 +246,7 @@ func (app *application) listMoviesHandler(writer http.ResponseWriter, request *h
 
 	input.Filters.SortSafelist = []string{"id", "title", "year", "runtime", "-id", "-title", "-year", "-runtime"}
 
-	if data.ValidateFilters(v, input.Filters); !v.Valid() {
+	if database.ValidateFilters(v, input.Filters); !v.Valid() {
 		app.failedValidationResponse(writer, request, v.Errors)
 		return
 	}

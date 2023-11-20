@@ -2,7 +2,7 @@ package main
 
 import (
 	"errors"
-	"github.com/jessicatarra/greenlight/internal/data"
+	"github.com/jessicatarra/greenlight/internal/database"
 	"github.com/jessicatarra/greenlight/internal/validator"
 	"net/http"
 	"time"
@@ -33,15 +33,15 @@ func (app *application) activateUserHandler(writer http.ResponseWriter, request 
 
 	v := validator.New()
 
-	if data.ValidateTokenPlaintext(v, input.TokenPlaintext); !v.Valid() {
+	if database.ValidateTokenPlaintext(v, input.TokenPlaintext); !v.Valid() {
 		app.failedValidationResponse(writer, request, v.Errors)
 		return
 	}
 
-	user, err := app.models.Users.GetForToken(data.ScopeActivation, input.TokenPlaintext)
+	user, err := app.models.Users.GetForToken(database.ScopeActivation, input.TokenPlaintext)
 	if err != nil {
 		switch {
-		case errors.Is(err, data.ErrRecordNotFound):
+		case errors.Is(err, database.ErrRecordNotFound):
 			v.AddError("token", "invalid or expired activation token")
 			app.failedValidationResponse(writer, request, v.Errors)
 		default:
@@ -55,7 +55,7 @@ func (app *application) activateUserHandler(writer http.ResponseWriter, request 
 	err = app.models.Users.Update(user)
 	if err != nil {
 		switch {
-		case errors.Is(err, data.ErrEditConflict):
+		case errors.Is(err, database.ErrEditConflict):
 			app.editConflictResponse(writer, request)
 		default:
 			app.serverErrorResponse(writer, request, err)
@@ -63,7 +63,7 @@ func (app *application) activateUserHandler(writer http.ResponseWriter, request 
 		return
 	}
 
-	err = app.models.Tokens.DeleteAllForUser(data.ScopeActivation, user.ID)
+	err = app.models.Tokens.DeleteAllForUser(database.ScopeActivation, user.ID)
 	if err != nil {
 		app.serverErrorResponse(writer, request, err)
 		return
@@ -92,7 +92,7 @@ func (app *application) registerUserHandler(writer http.ResponseWriter, request 
 		return
 	}
 
-	user := &data.User{
+	user := &database.User{
 		Name:      input.Name,
 		Email:     input.Email,
 		Activated: false,
@@ -106,7 +106,7 @@ func (app *application) registerUserHandler(writer http.ResponseWriter, request 
 
 	v := validator.New()
 
-	if data.ValidateUser(v, user); !v.Valid() {
+	if database.ValidateUser(v, user); !v.Valid() {
 		app.failedValidationResponse(writer, request, v.Errors)
 		return
 	}
@@ -114,7 +114,7 @@ func (app *application) registerUserHandler(writer http.ResponseWriter, request 
 	err = app.models.Users.Insert(user)
 	if err != nil {
 		switch {
-		case errors.Is(err, data.ErrDuplicateEmail):
+		case errors.Is(err, database.ErrDuplicateEmail):
 			v.AddError("email", "a user with this email address already exists")
 			app.failedValidationResponse(writer, request, v.Errors)
 		default:
@@ -129,7 +129,7 @@ func (app *application) registerUserHandler(writer http.ResponseWriter, request 
 		return
 	}
 
-	token, err := app.models.Tokens.New(user.ID, 3*24*time.Hour, data.ScopeActivation)
+	token, err := app.models.Tokens.New(user.ID, 3*24*time.Hour, database.ScopeActivation)
 	if err != nil {
 		app.serverErrorResponse(writer, request, err)
 		return

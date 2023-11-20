@@ -12,7 +12,9 @@ See more here: https://lets-go-further.alexedwards.net/
 
 
 1. **Docker Compose**: Included a Docker Compose file to simplify the setup process and allow running the database locally. 
-2. **API Documentation**: https://greenlight.tarralva.com/swagger/index.html
+2. **API Documentation**: Integrated API documentation using Swagger. You can access the API documentation [here](https://greenlight.tarralva.com/swagger/index.html). It provides detailed information about the available endpoints, request/response schemas, and allows testing the API interactively.
+3. **Auto Migration**: Implemented an automated migration process. This feature automatically applies any required database schema changes when the application starts, ensuring that the database is always up to date with the latest changes.
+4. **Embedded Migration Files**: Added embedded migration files to the application. These migration files contain SQL scripts that define the necessary database schema changes. See more: [GO EMBED FOR MIGRATIONS](https://oscarforner.com/blog/2023-10-10-go-embed-for-migrations/)
 
 
 ## Getting Started
@@ -35,8 +37,6 @@ See more here: https://lets-go-further.alexedwards.net/
 ```
 export DATABASE_URL=
 
-export MIGRATION_URL=
-
 export SMTP_HOST=
 
 export SMTP_PASSWORD=
@@ -56,8 +56,6 @@ export JWT_SECRET=
 Make sure to provide the necessary details for each environment variable. Here's a brief explanation of each variable:
 
 DATABASE_URL: The database connection string for PostgreSQL. Modify it according to your PostgreSQL database setup.
-
-MIGRATION_URL: The URL or path to the migrations' directory. Modify it to match the location of your migrations.
 
 SMTP_HOST, SMTP_PASSWORD, SMTP_PORT, SMTP_SENDER, SMTP_USERNAME: SMTP server configuration for sending emails. Update these values with your SMTP server details. I use [Mailtrap](https://mailtrap.io/), very easy to set up.
 

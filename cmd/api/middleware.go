@@ -3,7 +3,7 @@ package main
 import (
 	"errors"
 	"fmt"
-	"github.com/jessicatarra/greenlight/internal/data"
+	"github.com/jessicatarra/greenlight/internal/database"
 	"github.com/pascaldekloe/jwt"
 	"golang.org/x/time/rate"
 	"net/http"
@@ -58,7 +58,7 @@ func (app *application) authenticate(next http.Handler) http.Handler {
 		writer.Header().Add("Vary", "Authorization")
 		authorizationHeader := request.Header.Get("Authorization")
 		if authorizationHeader == "" {
-			request = app.contextSetUser(request, data.AnonymousUser)
+			request = app.contextSetUser(request, database.AnonymousUser)
 			next.ServeHTTP(writer, request)
 			return
 		}
@@ -97,7 +97,7 @@ func (app *application) authenticate(next http.Handler) http.Handler {
 
 		if err != nil {
 			switch {
-			case errors.Is(err, data.ErrRecordNotFound):
+			case errors.Is(err, database.ErrRecordNotFound):
 				app.invalidAuthenticationTokenResponse(writer, request)
 
 			default:
