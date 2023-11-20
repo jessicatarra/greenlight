@@ -8,6 +8,7 @@ require (
 	github.com/julienschmidt/httprouter v1.3.0
 	github.com/justinas/alice v1.2.0
 	github.com/lib/pq v1.10.9
+	github.com/pascaldekloe/jwt v1.12.0
 	github.com/swaggo/http-swagger v1.3.4
 	github.com/swaggo/swag v1.16.2
 	golang.org/x/crypto v0.7.0

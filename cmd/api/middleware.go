@@ -4,10 +4,12 @@ import (
 	"errors"
 	"fmt"
 	"github.com/jessicatarra/greenlight/internal/data"
-	"github.com/jessicatarra/greenlight/internal/validator"
+	"github.com/pascaldekloe/jwt"
 	"golang.org/x/time/rate"
 	"net/http"
+	"strconv"
 	"strings"
+	"time"
 )
 
 func (app *application) logRequest(next http.Handler) http.Handler {
@@ -54,35 +56,50 @@ func (app *application) rateLimit(next http.Handler) http.Handler {
 func (app *application) authenticate(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(writer http.ResponseWriter, request *http.Request) {
 		writer.Header().Add("Vary", "Authorization")
-
 		authorizationHeader := request.Header.Get("Authorization")
-
 		if authorizationHeader == "" {
 			request = app.contextSetUser(request, data.AnonymousUser)
 			next.ServeHTTP(writer, request)
 			return
 		}
-
 		headerParts := strings.Split(authorizationHeader, " ")
 		if len(headerParts) != 2 || headerParts[0] != "Bearer" {
 			app.invalidAuthenticationTokenResponse(writer, request)
 			return
 		}
-
 		token := headerParts[1]
 
-		v := validator.New()
-
-		if data.ValidateTokenPlaintext(v, token); !v.Valid() {
+		claims, err := jwt.HMACCheck([]byte(token), []byte(app.config.jwt.secret))
+		if err != nil {
 			app.invalidAuthenticationTokenResponse(writer, request)
 			return
 		}
 
-		user, err := app.models.Users.GetForToken(data.ScopeAuthentication, token)
+		if !claims.Valid(time.Now()) {
+			app.invalidAuthenticationTokenResponse(writer, request)
+			return
+		}
+		if claims.Issuer != "greenlight.tarralva.com" {
+			app.invalidAuthenticationTokenResponse(writer, request)
+			return
+		}
+		if !claims.AcceptAudience("greenlight.tarralva.com") {
+			app.invalidAuthenticationTokenResponse(writer, request)
+			return
+		}
+
+		userID, err := strconv.ParseInt(claims.Subject, 10, 64)
+		if err != nil {
+			app.serverErrorResponse(writer, request, err)
+			return
+		}
+		user, err := app.models.Users.Get(userID)
+
 		if err != nil {
 			switch {
 			case errors.Is(err, data.ErrRecordNotFound):
 				app.invalidAuthenticationTokenResponse(writer, request)
+
 			default:
 				app.serverErrorResponse(writer, request, err)
 			}
@@ -90,7 +107,6 @@ func (app *application) authenticate(next http.Handler) http.Handler {
 		}
 
 		request = app.contextSetUser(request, user)
-
 		next.ServeHTTP(writer, request)
 	})
 }

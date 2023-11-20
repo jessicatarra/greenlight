@@ -4,7 +4,9 @@ import (
 	"errors"
 	"github.com/jessicatarra/greenlight/internal/data"
 	"github.com/jessicatarra/greenlight/internal/validator"
+	"github.com/pascaldekloe/jwt"
 	"net/http"
+	"strconv"
 	"time"
 )
 
@@ -62,13 +64,22 @@ func (app *application) createAuthenticationTokenHandler(writer http.ResponseWri
 		return
 	}
 
-	token, err := app.models.Tokens.New(user.ID, 24*time.Hour, data.ScopeAuthentication)
+	var claims jwt.Claims
+	claims.Subject = strconv.FormatInt(user.ID, 10)
+	claims.Issued = jwt.NewNumericTime(time.Now())
+	claims.NotBefore = jwt.NewNumericTime(time.Now())
+	claims.Expires = jwt.NewNumericTime(time.Now().Add(24 * time.Hour))
+	claims.Issuer = "greenlight.tarralva.com"
+	claims.Audiences = []string{"greenlight.tarralva.com"}
+	claims.Audiences = []string{"greenlight.tarralva.com"}
+
+	jwtBytes, err := claims.HMACSign(jwt.HS256, []byte(app.config.jwt.secret))
 	if err != nil {
 		app.serverErrorResponse(writer, request, err)
 		return
 	}
 
-	err = app.writeJSON(writer, http.StatusCreated, envelope{"authentication_token": token}, nil)
+	err = app.writeJSON(writer, http.StatusCreated, envelope{"authentication_token": string(jwtBytes)}, nil)
 	if err != nil {
 		app.serverErrorResponse(writer, request, err)
 	}

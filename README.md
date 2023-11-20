@@ -49,6 +49,8 @@ export SMTP_USERNAME=
 
 export CORS_TRUSTED_ORIGINS=
 
+export JWT_SECRET=
+
 ```
 
 Make sure to provide the necessary details for each environment variable. Here's a brief explanation of each variable:
@@ -60,6 +62,8 @@ MIGRATION_URL: The URL or path to the migrations' directory. Modify it to match 
 SMTP_HOST, SMTP_PASSWORD, SMTP_PORT, SMTP_SENDER, SMTP_USERNAME: SMTP server configuration for sending emails. Update these values with your SMTP server details. I use [Mailtrap](https://mailtrap.io/), very easy to set up.
 
 CORS_TRUSTED_ORIGINS: A space-separated list of trusted origins for Cross-Origin Resource Sharing (CORS). Modify it with the origins that should be allowed to access the API.
+
+JWT_SECRET: The algorithm ( HS256 ) used to sign the JWT means that the secret is a symmetric key that is known by both the sender and the receiver. [See more](https://jwt.io/)
 
 5. **Build and Start Containers**: Run the following command to build and start the containers using Docker Compose::
 

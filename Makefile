@@ -2,7 +2,7 @@ include .envrc
 
 .PHONY: run/api
 run/api:
-	go run ./cmd/api -db-dsn=${DATABASE_URL} -cors-trusted-origins=${CORS_TRUSTED_ORIGINS}
+	go run ./cmd/api -db-dsn=${DATABASE_URL} -cors-trusted-origins=${CORS_TRUSTED_ORIGINS} -jwt-secret=${JWT_SECRET}
 
 .PHONY: run/api/help
 run/api/help:

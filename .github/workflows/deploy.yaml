@@ -24,6 +24,7 @@ jobs:
           SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
           SMTP_SENDER: ${{ vars.SMTP_SENDER }}
           CORS_TRUSTED_ORIGINS: ${{ vars.CORS_TRUSTED_ORIGINS }}
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
       - run: |
           flyctl deploy \
             --build-arg API_VERSION=$(git describe --always --dirty --tags --long) \
@@ -35,4 +36,5 @@ jobs:
             --build-arg SMTP_PASSWORD=$SMTP_PASSWORD \
             --build-arg SMTP_SENDER=$SMTP_SENDER \
             --build-arg CORS_TRUSTED_ORIGINS=$CORS_TRUSTED_ORIGINS \
+            --build-arg JWT_SECRET=$JWT_SECRET \
             --remote-only
