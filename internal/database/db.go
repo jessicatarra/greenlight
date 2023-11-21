@@ -31,7 +31,7 @@ func New(dsn string, maxOpenConns int, maxIdleConns int, maxIdleTime string, aut
 	db.SetConnMaxIdleTime(duration)
 
 	if automigrate {
-		iofsDriver, err := iofs.New(assets.MigrationsFiles, "migrations")
+		iofsDriver, err := iofs.New(assets.EmbeddedFiles, "migrations")
 		if err != nil {
 			return nil, err
 		}

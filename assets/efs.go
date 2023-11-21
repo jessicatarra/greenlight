@@ -2,5 +2,5 @@ package assets
 
 import "embed"
 
-//go:embed "migrations/*.sql"
-var MigrationsFiles embed.FS
+//go:embed "migrations" "emails"
+var EmbeddedFiles embed.FS
